@@ -48,5 +48,10 @@ module.exports = {
         code: '10007',
         message:'修改密码失败',
         return :''
+    },
+    fileUploadError:{
+        code:'10201',
+        message:'商品图片上传失败',
+        result:'',
     }
 }
