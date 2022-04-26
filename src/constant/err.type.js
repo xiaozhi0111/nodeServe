@@ -71,7 +71,7 @@ module.exports = {
     },
     invalidGoodsId:{
         code: '10205',
-        message: '更新商品不存在',
+        message: '无效的商品id',
         result: ''
     }
 }

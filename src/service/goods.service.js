@@ -6,19 +6,19 @@ class goodsService {
         return res.dataValues
     }
     async updateGoods(id,goods){
-        console.log(id,goods);
-        const {goods_name, goods_price, goods_num, goods_img} = goods;
-        const whereOpt = {id};
-        const newGoods = {};
-
-        goods_name && Object.assign(newGoods,{goods_name});
-        goods_price && Object.assign(newGoods,{goods_price});
-        goods_num && Object.assign(newGoods,{goods_num});
-        goods_img && Object.assign(newGoods,{goods_img});
-
-        const res = await Goods.update(newGoods,{where: whereOpt});
+        const res = await Goods.update(goods,{where: {id}});
 
         return res[0] > 0 ? true : false;
+    }
+    async removeGoods(id){
+        const res = await Goods.destroy({where:{id}})
+
+        return res > 0 ? true : false;
+    }
+    async restoreGoods(id){
+        const res = await Goods.restore({where: {id}});
+        
+        return res > 0 ? true : false;
     }
 }
 module.exports = new goodsService();

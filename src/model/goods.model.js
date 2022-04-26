@@ -23,6 +23,8 @@ const Goods = seq.define('zd_goods',{
         allowNull: false,
         comment: '商品图片地址'
     }
+},{
+    paranoid: true,
 })
 
 // Goods.sync({force:true});
