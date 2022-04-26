@@ -1,6 +1,6 @@
 const path = require('path');
 
-const { createGoods, updateGoods, removeGoods, restoreGoods } = require('../service/goods.service');
+const { createGoods, updateGoods, removeGoods, restoreGoods,findGoods } = require('../service/goods.service');
 const { fileUploadError, unSupposedFileType, publishGoodsError, invalidGoodsId } = require('../constant/err.type');
 class GoodsController {
     async upload(ctx,next){
@@ -81,6 +81,15 @@ class GoodsController {
             }
         } catch (error) {
             console.error(error);
+        }
+    }
+    async findAll(ctx,next){
+        const {pageNum = 1,pageSize = 10} = ctx.request.query;
+        const res = await findGoods(pageNum,pageSize);
+        ctx.body = {
+            code: 0,
+            message: '获取商品列表成功',
+            result: res
         }
     }
 }

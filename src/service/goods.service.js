@@ -20,5 +20,18 @@ class goodsService {
         
         return res > 0 ? true : false;
     }
+    async findGoods(pageNum,pageSize){
+        //1、获取总数
+        const count = await Goods.count();
+        //2、获取分布的具体数据
+        const offset = (pageNum -1) * pageSize;
+        const rows = await Goods.findAll({offset:offset,limit:pageSize * 1})
+        return {
+            pageNum,
+            pageSize,
+            total: count,
+            list: rows
+        }
+    }
 }
 module.exports = new goodsService();
