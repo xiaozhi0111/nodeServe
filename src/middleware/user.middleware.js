@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const {getUserInfo} = require('../service/user.service');
-const {userFormateError,userAlreadyExited,userRegisterError} = require('../constant/err.type');
+const {userFormateError,userAlreadyExited,userRegisterError,userDoesNotExist, userLoginError,invalidPasswordError} = require('../constant/err.type');
 
 const userValudator = async (ctx,next) => {
     const {user_name,password} = ctx.request.body;
@@ -31,7 +31,7 @@ const verfiyUser = async(ctx,next) => {
     await next();
 }
 
-const crpytPassword = async (ctx,next) =>{
+const crpytPassword = async (ctx,next) => {
     const {password} = ctx.request.body;
     const salt = bcrypt.genSaltSync(10);
 
@@ -44,7 +44,30 @@ const crpytPassword = async (ctx,next) =>{
     await next();
 }
 
+const verifyLogin = async (ctx,next) => {
+    const {user_name,password} = ctx.request.body;
+    
+    try {
+        const res = await getUserInfo({user_name});
+        if(!res){
+            console.error('用户不存在',user_name);
+            ctx.app.emit('error',userDoesNotExist,ctx);
+            return ;
+        }
+        if(!bcrypt.compareSync(password,res.password)){
+            ctx.app.emit('error', invalidPasswordError, ctx)
+            return ;
+        }
+    } catch (error) {
+        console.error(err,'登录出错');
+        ctx.app('error',userLoginError,ctx);
+        return ;
+    }
+    
+    await next();
+}
+
 
 module.exports = {
-    userValudator,verfiyUser,crpytPassword
+    userValudator,verfiyUser,crpytPassword,verifyLogin
 }
