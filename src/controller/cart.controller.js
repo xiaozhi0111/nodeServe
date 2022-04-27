@@ -1,7 +1,7 @@
 
-const { createOrUpdate, findCartList, updateCart } = require('../service/cart.service');
+const { createOrUpdate, findCartList, updateCart, deleteCart, selectAllCarts } = require('../service/cart.service');
 
-const {cartFormatError} = require('../constant/err.type');
+const { cartFormatError, selectAllError } = require('../constant/err.type');
 
 class CartController {
     async add(ctx){
@@ -39,6 +39,30 @@ class CartController {
         ctx.body = {
             code: 0,
             message: '购物车更新成功',
+            result: res
+        }
+    }
+    async remove(ctx){
+        const {ids} = ctx.request.body;
+        const res = await deleteCart(ids);
+        ctx.body = {
+            code: 0,
+            message: '购物车删除成功',
+            result: res
+        }
+    }
+    async selectAll(ctx){
+        const user_id = ctx.state.user.id;
+        const { checked } = ctx.request.body
+        if(checked === undefined){
+            console.log(checked);
+            ctx.app.emit('error',selectAllError,ctx);
+            return ;
+        }
+        const res = await selectAllCarts({ user_id,checked });
+        ctx.body = {
+            code: 0,
+            message: checked ? '全选成功' : '取消全选成功',
             result: res
         }
     }

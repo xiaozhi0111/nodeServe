@@ -15,8 +15,9 @@ app.use(koaBody({           //参数处理插件
     multipart: true,
     formidable:{
         uploadDir: path.join(__dirname,'../upload'),
-        keepExtensions: true
-    }
+        keepExtensions: true,
+    },
+    parsedMethods: ['POST', "PUT", "PATCH", "DELETE"]
 }));
 
 app.use(koaStatic(path.join(__dirname,'../upload')));       //静态资源处理插件

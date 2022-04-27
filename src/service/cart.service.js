@@ -54,6 +54,21 @@ class CartService {
         await res.save()
         return res.dataValues;
     }
+    async deleteCart(ids){
+        const res = await Cart.destroy({
+            where:{
+                id:{
+                    [Op.in]:ids
+                }
+            }
+        })
+
+        return res;
+    }
+    async selectAllCarts(params){
+        const { user_id, checked } = params;
+        return await Cart.update({selected:checked},{where:{user_id}})
+    }
 }
 
 module.exports = new CartService();

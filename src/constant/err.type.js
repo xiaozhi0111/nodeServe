@@ -78,5 +78,10 @@ module.exports = {
         code: '10301',
         message: '购物车数据格式错误',
         result: ''
+    },
+    selectAllError: {
+        code: '10302',
+        message: '全选状态值参数未传',
+        result: ''
     }
 }
